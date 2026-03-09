@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corticeira — Arte em Cortiça</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cork: #c4956a;
+    --cork-dark: #8b5e3c;
+    --cork-light: #e8cba8;
+    --cream: #f5f0e8;
+    --sand: #ede4d3;
+    --forest: #3d5a3e;
+    --forest-light: #5a7a5b;
+    --charcoal: #2c2416;
+    --warm-white: #faf7f2;
+    --text: #3a2e1e;
+    --text-muted: #7a6a55;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--warm-white);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ===== TEXTURA DE CORTIÇA ===== */
+  .cork-texture {
+    position: relative;
+  }
+  .cork-texture::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse at 20% 30%, rgba(196,149,106,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 70%, rgba(139,94,60,0.1) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    background: rgba(245, 240, 232, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(196,149,106,0.2);
+    transition: all 0.3s ease;
+  }
+
+  nav.scrolled {
+    height: 60px;
+    background: rgba(245, 240, 232, 0.98);
+    box-shadow: 0 4px 24px rgba(44,36,22,0.08);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--cork-dark);
+    letter-spacing: 0.02em;
+    text-decoration: none;
+  }
+
+  .nav-logo span {
+    color: var(--forest);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    position: relative;
+    transition: color 0.3s;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 1.5px;
+    background: var(--cork);
+    transition: width 0.3s ease;
+  }
+
+  .nav-links a:hover { color: var(--cork-dark); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+  }
+
+  .nav-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--cork-dark);
+    transition: all 0.3s;
+    border-radius: 2px;
+  }
+
+  /* ===== HERO ===== */
+  #inicio {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 72px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8% 8% 8% 10%;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--sand);
+    border: 1px solid var(--cork-light);
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cork-dark);
+    font-weight: 500;
+    margin-bottom: 2rem;
+    width: fit-content;
+    animation: fadeUp 0.8s ease forwards;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--forest);
+    border-radius: 50%;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    line-height: 1.08;
+    color: var(--charcoal);
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+
+  .hero-title em {
+    color: var(--cork);
+    font-style: italic;
+  }
+
+  .hero-desc {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--text-muted);
+    max-width: 420px;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .btn-primary {
+    background: var(--cork-dark);
+    color: white;
+    padding: 0.9rem 2rem;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background: var(--charcoal);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(44,36,22,0.2);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--cork-dark);
+    padding: 0.9rem 2rem;
+    border: 1.5px solid var(--cork);
+    border-radius: 4px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline:hover {
+    background: var(--cork-light);
+    transform: translateY(-2px);
+  }
+
+  .hero-visual {
+    position: relative;
+    background: var(--sand);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-visual::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 60% 40%, rgba(196,149,106,0.3) 0%, transparent 60%),
+      radial-gradient(circle at 30% 80%, rgba(61,90,62,0.15) 0%, transparent 50%);
+  }
+
+  .hero-cork-art {
+    position: relative;
+    z-index: 1;
+    width: 75%;
+    max-width: 420px;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .cork-product-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cork-product-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(44,36,22,0.1);
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 1rem;
+    gap: 0.5rem;
+    transition: transform 0.3s;
+  }
+
+  .cork-product-card:hover { transform: translateY(-4px); }
+
+  .cork-product-card:first-child { margin-top: 2rem; }
+  .cork-product-card:nth-child(2) { margin-top: -1rem; }
+  .cork-product-card:nth-child(4) { margin-top: -1rem; }
+
+  .cork-icon {
+    font-size: 2.5rem;
+  }
+
+  .cork-product-card p {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--cork-light);
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+
+  .stat-item {}
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--cork-dark);
+    font-weight: 700;
+  }
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* ===== SECTION STYLES ===== */
+  section {
+    padding: 100px 10%;
+  }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--forest);
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 24px; height: 1.5px;
+    background: var(--forest);
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    line-height: 1.15;
+    color: var(--charcoal);
+    margin-bottom: 1.2rem;
+  }
+
+  /* ===== SOBRE NÓS ===== */
+  #sobre {
+    background: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #sobre::before {
+    content: '';
+    position: absolute;
+    right: -10%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,149,106,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .sobre-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .sobre-visual {
+    position: relative;
+  }
+
+  .sobre-main-box {
+    background: var(--cork-dark);
+    border-radius: 16px;
+    aspect-ratio: 3/4;
+    max-height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sobre-main-box::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 60%);
+  }
+
+  .sobre-accent-box {
+    position: absolute;
+    bottom: -24px;
+    right: -24px;
+    background: var(--forest);
+    border-radius: 12px;
+    width: 180px;
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    box-shadow: 0 8px 32px rgba(44,36,22,0.2);
+  }
+
+  .sobre-accent-box .big-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: white;
+    font-weight: 700;
+  }
+
+  .sobre-accent-box p {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .sobre-text .section-desc {
+    font-size: 1rem;
+    line-height: 1.85;
+    color: var(--text-muted);
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+
+  .valores-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .valor-item {
+    background: white;
+    border-radius: 12px;
+    padding: 1.2rem;
+    border-left: 3px solid var(--cork);
+  }
+
+  .valor-item h4 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--cork-dark);
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.05em;
+  }
+
+  .valor-item p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* ===== CATÁLOGO ===== */
+  #catalogo {
+    background: var(--warm-white);
+  }
+
+  .catalogo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .catalogo-filters {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    background: transparent;
+    border: 1.5px solid var(--cork-light);
+    color: var(--text-muted);
+    padding: 0.5rem 1.2rem;
+    border-radius: 100px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 0.05em;
+  }
+
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--cork-dark);
+    border-color: var(--cork-dark);
+    color: white;
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+
+  .product-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid rgba(196,149,106,0.15);
+  }
+
+  .product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 24px 48px rgba(44,36,22,0.12);
+    border-color: var(--cork-light);
+  }
+
+  .product-image {
+    aspect-ratio: 4/3;
+    background: var(--sand);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 60%, rgba(196,149,106,0.15) 0%, transparent 70%);
+  }
+
+  .product-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--forest);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+    border-radius: 100px;
+  }
+
+  .product-info {
+    padding: 1.2rem 1.4rem 1.5rem;
+  }
+
+  .product-category {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cork);
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+  }
+
+  .product-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--charcoal);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  .product-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* ===== ONDE ESTAMOS ===== */
+  #onde {
+    background: var(--charcoal);
+    color: white;
+    padding: 100px 10%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #onde::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 80% 20%, rgba(196,149,106,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 20% 80%, rgba(61,90,62,0.1) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .onde-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 5rem;
+    align-items: start;
+    position: relative;
+    z-index: 1;
+  }
+
+  #onde .section-label {
+    color: var(--cork-light);
+  }
+
+  #onde .section-label::before {
+    background: var(--cork-light);
+  }
+
+  #onde .section-title {
+    color: white;
+  }
+
+  .onde-info {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .info-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .info-icon {
+    width: 44px;
+    height: 44px;
+    background: rgba(196,149,106,0.15);
+    border: 1px solid rgba(196,149,106,0.3);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .info-item h4 {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cork-light);
+    margin-bottom: 0.3rem;
+  }
+
+  .info-item p {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .map-container {
+    border-radius: 16px;
+    overflow: hidden;
+    height: 420px;
+    border: 1px solid rgba(196,149,106,0.2);
+    box-shadow: 0 24px 48px rgba(0,0,0,0.3);
+  }
+
+  .map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  /* ===== CONTACTO ===== */
+  #contacto {
+    background: var(--cream);
+    position: relative;
+  }
+
+  .contacto-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .contact-form-box {
+    background: white;
+    border-radius: 20px;
+    padding: 2.5rem;
+    border: 1px solid rgba(196,149,106,0.15);
+    box-shadow: 0 8px 32px rgba(44,36,22,0.05);
+  }
+
+  .form-group {
+    margin-bottom: 1.2rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 1.5px solid var(--cork-light);
+    border-radius: 8px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text);
+    background: var(--warm-white);
+    transition: all 0.3s;
+    outline: none;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    border-color: var(--cork);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(196,149,106,0.1);
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .contact-side {}
+
+  .contact-side .section-desc {
+    font-size: 1rem;
+    line-height: 1.85;
+    color: var(--text-muted);
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 2rem;
+  }
+
+  .social-link {
+    width: 44px;
+    height: 44px;
+    background: white;
+    border: 1.5px solid var(--cork-light);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+  }
+
+  .social-link:hover {
+    background: var(--cork-dark);
+    border-color: var(--cork-dark);
+    transform: translateY(-2px);
+  }
+
+  .form-success {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .form-success .success-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-success h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--cork-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .form-success p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--charcoal);
+    color: white;
+    padding: 4rem 10% 2rem;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 4rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 2rem;
+  }
+
+  .footer-brand {}
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 1rem;
+  }
+  .footer-logo span { color: var(--cork); }
+  .footer-brand p {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.7;
+    max-width: 280px;
+    font-weight: 300;
+  }
+
+  .footer-col h4 {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cork-light);
+    margin-bottom: 1.2rem;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .footer-col ul a {
+    text-decoration: none;
+    color: rgba(255,255,255,0.55);
+    font-size: 0.85rem;
+    font-weight: 300;
+    transition: color 0.3s;
+  }
+
+  .footer-col ul a:hover { color: var(--cork-light); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-bottom p {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.3);
+    font-weight: 300;
+  }
+
+  .footer-bottom-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .footer-bottom-links a {
+    text-decoration: none;
+    color: rgba(255,255,255,0.3);
+    font-size: 0.78rem;
+    transition: color 0.3s;
+  }
+
+  .footer-bottom-links a:hover { color: var(--cork-light); }
+
+  /* ===== DIVIDER ===== */
+  .cork-divider {
+    height: 6px;
+    background: linear-gradient(90deg, var(--cork-light), var(--cork), var(--cork-dark), var(--forest), var(--cork-dark), var(--cork), var(--cork-light));
+    background-size: 200% 100%;
+    animation: gradientShift 4s ease infinite;
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===== MOBILE MENU ===== */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 72px;
+    left: 0;
+    right: 0;
+    background: var(--cream);
+    border-bottom: 1px solid var(--cork-light);
+    padding: 1.5rem 5%;
+    z-index: 999;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow: 0 8px 32px rgba(44,36,22,0.1);
+  }
+
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    text-decoration: none;
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--cork-light);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    nav { padding: 0 5%; }
+    .nav-links { display: none; }
+    .nav-toggle { display: flex; }
+
+    #inicio {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .hero-content {
+      padding: 3rem 5%;
+      order: 2;
+    }
+
+    .hero-visual {
+      order: 1;
+      min-height: 320px;
+    }
+
+    .hero-stats { gap: 1.5rem; }
+
+    section { padding: 60px 5%; }
+
+    .sobre-layout,
+    .onde-layout,
+    .contacto-layout {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .sobre-main-box { max-height: 300px; }
+
+    .sobre-accent-box {
+      bottom: -16px;
+      right: -8px;
+      width: 140px;
+      height: 110px;
+    }
+
+    .catalogo-header { flex-direction: column; align-items: flex-start; }
+
+    .footer-top {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .cork-product-grid { max-width: 320px; }
+  }
+
+  @media (max-width: 600px) {
+    .produtos-grid { grid-template-columns: 1fr; }
+    .valores-grid { grid-template-columns: 1fr; }
+    .hero-title { font-size: 2.2rem; }
+    .hero-stats { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#inicio" class="nav-logo">Corti<span>çeira</span></a>
+  <ul class="nav-links">
+    <li><a href="#inicio">Início</a></li>
+    <li><a href="#sobre">Sobre Nós</a></li>
+    <li><a href="#catalogo">Catálogo</a></li>
+    <li><a href="#onde">Onde Estamos</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#inicio" onclick="closeMobileMenu()">Início</a>
+  <a href="#sobre" onclick="closeMobileMenu()">Sobre Nós</a>
+  <a href="#catalogo" onclick="closeMobileMenu()">Catálogo</a>
+  <a href="#onde" onclick="closeMobileMenu()">Onde Estamos</a>
+  <a href="#contacto" onclick="closeMobileMenu()">Contacto</a>
+</div>
+
+<!-- HERO -->
+<section id="inicio">
+  <div class="hero-content">
+    <div class="hero-badge">🌿 Sustentável &amp; Português</div>
+    <h1 class="hero-title">
+      Arte &amp; tradição<br>em <em>cortiça</em><br>portuguesa
+    </h1>
+    <p class="hero-desc">
+      Produtos únicos feitos com a melhor cortiça do mundo. Elegância natural, durabilidade excepcional e um compromisso profundo com a sustentabilidade.
+    </p>
+    <div class="hero-actions">
+      <a href="#catalogo" class="btn-primary">Ver Catálogo →</a>
+      <a href="#sobre" class="btn-outline">A Nossa História</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">+30</div>
+        <div class="stat-label">Anos de tradição</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Natural &amp; Eco</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">+200</div>
+        <div class="stat-label">Produtos únicos</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="cork-product-grid">
+      <div class="cork-product-card">
+        <div class="cork-icon">👜</div>
+        <p>Malas de Cortiça</p>
+      </div>
+      <div class="cork-product-card">
+        <div class="cork-icon">👛</div>
+        <p>Carteiras</p>
+      </div>
+      <div class="cork-product-card">
+        <div class="cork-icon">🖼️</div>
+        <p>Decoração</p>
+      </div>
+      <div class="cork-product-card">
+        <div class="cork-icon">👒</div>
+        <p>Acessórios</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cork-divider"></div>
+
+<!-- SOBRE NÓS -->
+<section id="sobre">
+  <div class="sobre-layout">
+    <div class="sobre-visual fade-in">
+      <div class="sobre-main-box">
+        🌳
+        <div class="sobre-accent-box">
+          <span class="big-num">1993</span>
+          <p>Fundação<br>da empresa</p>
+        </div>
+      </div>
+    </div>
+    <div class="sobre-text fade-in">
+      <div class="section-label">A Nossa História</div>
+      <h2 class="section-title">Três décadas a<br>trabalhar a cortiça</h2>
+      <p class="section-desc">
+        Fundada em 1993 em Évora, a Cortiçeira nasceu da paixão de uma família alentejana pela tradição corticeira. Com mais de trinta anos de experiência, somos especialistas na criação de produtos únicos que unem o artesanato português à modernidade do design contemporâneo.
+      </p>
+      <p class="section-desc">
+        Portugal é o maior produtor mundial de cortiça, e nós orgulhamo-nos de utilizar exclusivamente matéria-prima nacional. A cortiça é um material 100% natural, renovável e biodegradável — a escolha perfeita para quem valoriza a sustentabilidade sem abdicar do estilo.
+      </p>
+      <div class="valores-grid">
+        <div class="valor-item">
+          <h4>🌱 Sustentabilidade</h4>
+          <p>Cortiça 100% natural, sem impacto negativo no ecossistema.</p>
+        </div>
+        <div class="valor-item">
+          <h4>🤝 Artesanato</h4>
+          <p>Cada peça é criada com dedicação por artesãos experientes.</p>
+        </div>
+        <div class="valor-item">
+          <h4>🇵🇹 Tradição</h4>
+          <p>Preservamos o saber-fazer português há mais de 30 anos.</p>
+        </div>
+        <div class="valor-item">
+          <h4>✨ Qualidade</h4>
+          <p>Selecionamos apenas a melhor cortiça do Alentejo e Algarve.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATÁLOGO -->
+<section id="catalogo">
+  <div class="catalogo-header">
+    <div>
+      <div class="section-label">Os Nossos Produtos</div>
+      <h2 class="section-title">Catálogo de Cortiça</h2>
+    </div>
+    <div class="catalogo-filters">
+      <button class="filter-btn active" data-filter="all">Todos</button>
+      <button class="filter-btn" data-filter="bolsas">Bolsas &amp; Malas</button>
+      <button class="filter-btn" data-filter="acessorios">Acessórios</button>
+      <button class="filter-btn" data-filter="decoracao">Decoração</button>
+      <button class="filter-btn" data-filter="casa">Casa</button>
+    </div>
+  </div>
+
+  <div class="products-grid" id="productsGrid">
+
+    <div class="product-card fade-in" data-category="bolsas">
+      <div class="product-image">
+        <span class="product-tag">Mais Vendido</span>
+        👜
+      </div>
+      <div class="product-info">
+        <div class="product-category">Bolsas &amp; Malas</div>
+        <h3 class="product-name">Mala Tiracolo Natura</h3>
+        <p class="product-desc">Mala em cortiça natural com fecho magnético e alça ajustável. Impermeável e surpreendentemente leve.</p>
+      </div>
+    </div>
+
+    <div class="product-card fade-in" data-category="acessorios">
+      <div class="product-image">👛</div>
+      <div class="product-info">
+        <div class="product-category">Acessórios</div>
+        <h3 class="product-name">Carteira Lisboa</h3>
+        <p class="product-desc">Carteira slim em cortiça com múltiplos compartimentos para cartões. Design minimalista e elegante.</p>
+      </div>
+    </div>
+
+    <div class="product-card fade-in" data-category="decoracao">
+      <div class="product-image">
+        <span class="product-tag">Novo</span>
+        🖼️
+      </div>
+      <div class="product-info">
+        <div class="product-category">Decoração</div>
+        <h3 class="product-name">Quadro Mosaico Cortiça</h3>
+        <p class="product-desc">Peça artística em cortiça natural com padrões geométricos. Perfeita para qualquer espaço contemporâneo.</p>
+      </div>
+    </div>
+
+    <div class="product-card fade-in" data-category="casa">
+      <div class="product-image">🕯️</div>
+      <div class="product-info">
+        <div class="product-category">Casa</div>
+        <h3 class="product-name">Jogo de Bases para Copos</h3>
+        <p class="product-desc">Conjunto de 4 bases em cortiça natural. Protegem as superfícies com elegância e estilo português.</p>
+      </div>
+    </div>
+
+    <div class="product-card fade-in" data-category="bolsas">
+      <div class="product-image">🎒</div>
+      <div class="product-info">
+        <div class="product-category">Bolsas &amp; Malas</div>
+        <h3 class="product-name">Mochila Urban Cork</h3>
+        <p class="product-desc">Mochila casual em cortiça com interior espaçoso e compartimento acolchoado para laptop.</p>
+      </div>
+    </div>
+
+    <div class="product-card fade-in" data-category="acessorios">
+      <div class="product-image">
+        <span class="product-tag">Exclusivo</span>
+        🕶️
+      </div>
+      <div class="product-info">
+        <div class="product-category">Acessórios</div>
+        <h3 class="product-name">Estojo Cortiça Premium</h3>
+        <p class="product-desc">Estojo elegante em cortiça com interior forrado a veludo. Ideal para óculos ou canetas de coleção.</p>
+      </div>
+    </div>
+
+    <div class="product-card fade-in" data-category="decoracao">
+      <div class="product-image">🌿</div>
+      <div class="product-info">
+        <div class="product-category">Decoração</div>
+        <h3 class="product-name">Vaso Cork &amp; Green</h3>
+        <p class="product-desc">Vaso revestido a cortiça natural, perfeito para suculentas e pequenas plantas de interior.</p>
+      </div>
+    </div>
+
+    <div class="product-card fade-in" data-category="acessorios">
+      <div class="product-image">⌚</div>
+      <div class="product-info">
+        <div class="product-category">Acessórios</div>
+        <h3 class="product-name">Cinto Alentejo</h3>
+        <p class="product-desc">Cinto em cortiça natural com fivela dourada. Resistente, flexível e com textura única.</p>
+      </div>
+    </div>
+
+    <div class="product-card fade-in" data-category="casa">
+      <div class="product-image">🍽️</div>
+      <div class="product-info">
+        <div class="product-category">Casa</div>
+        <h3 class="product-name">Tábua de Servir</h3>
+        <p class="product-desc">Tábua de cortiça natural para servir queijos e enchidos. Higiénica, leve e biodegradável.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ONDE ESTAMOS -->
+<section id="onde">
+  <div class="onde-layout">
+    <div class="fade-in">
+      <div class="section-label">Encontre-nos</div>
+      <h2 class="section-title">Visite a<br>nossa loja</h2>
+      <div class="onde-info">
+        <div class="info-item">
+          <div class="info-icon">📍</div>
+          <div>
+            <h4>Morada</h4>
+            <p>Rua da Cortiça, nº 42<br>7000-123 Évora, Portugal</p>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">🕐</div>
+          <div>
+            <h4>Horário</h4>
+            <p>Segunda a Sexta: 9h00 – 18h30<br>Sábado: 10h00 – 16h00<br>Domingo: Encerrado</p>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">📞</div>
+          <div>
+            <h4>Telefone</h4>
+            <p>+351 266 123 456</p>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">✉️</div>
+          <div>
+            <h4>Email</h4>
+            <p>geral@corticeira.pt</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="map-container fade-in">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12363.21876037738!2d-7.912434!3d38.571064!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd1aca6d3f065765%3A0xe4a2dcb17fd96c11!2s%C3%89vora!5e0!3m2!1spt!2spt!4v1700000000000"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Localização da Cortiçeira em Évora">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="contacto-layout">
+    <div class="fade-in">
+      <div class="section-label">Fale Connosco</div>
+      <h2 class="section-title">Entre em<br>contacto</h2>
+      <p class="contact-side section-desc">
+        Tem alguma questão sobre os nossos produtos ou gostaria de saber mais sobre a cortiça? A nossa equipa está disponível para o ajudar. Responderemos em até 24 horas.
+      </p>
+      <div class="onde-info">
+        <div class="info-item">
+          <div class="info-icon" style="background:rgba(61,90,62,0.08);border-color:rgba(61,90,62,0.2);">📞</div>
+          <div>
+            <h4 style="color:var(--forest)">Telefone</h4>
+            <p style="color:var(--text-muted)">+351 266 123 456</p>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon" style="background:rgba(61,90,62,0.08);border-color:rgba(61,90,62,0.2);">✉️</div>
+          <div>
+            <h4 style="color:var(--forest)">Email</h4>
+            <p style="color:var(--text-muted)">geral@corticeira.pt</p>
+          </div>
+        </div>
+      </div>
+      <div class="social-links">
+        <a class="social-link" href="#" title="Instagram">📸</a>
+        <a class="social-link" href="#" title="Facebook">👥</a>
+        <a class="social-link" href="#" title="Pinterest">📌</a>
+        <a class="social-link" href="#" title="LinkedIn">💼</a>
+      </div>
+    </div>
+
+    <div class="contact-form-box fade-in">
+      <div id="contactForm">
+        <div style="margin-bottom:1.5rem;">
+          <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--charcoal);margin-bottom:0.3rem;">Enviar Mensagem</h3>
+          <p style="font-size:0.82rem;color:var(--text-muted);">Todos os campos são obrigatórios</p>
+        </div>
+        <div class="form-group">
+          <label>Nome Completo</label>
+          <input type="text" placeholder="O seu nome" id="nome">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="o.seu@email.com" id="email">
+        </div>
+        <div class="form-group">
+          <label>Assunto</label>
+          <select id="assunto">
+            <option value="">Selecione o assunto</option>
+            <option>Informação sobre produtos</option>
+            <option>Encomenda personalizada</option>
+            <option>Parcerias</option>
+            <option>Outro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Mensagem</label>
+          <textarea placeholder="Escreva a sua mensagem aqui..." id="mensagem"></textarea>
+        </div>
+        <button class="btn-primary" style="width:100%;justify-content:center;" onclick="submitForm()">
+          Enviar Mensagem →
+        </button>
+      </div>
+      <div class="form-success" id="formSuccess">
+        <div class="success-icon">✅</div>
+        <h3>Mensagem Enviada!</h3>
+        <p>Obrigado pelo seu contacto. Responderemos em breve.</p>
+        <button class="btn-outline" style="margin-top:1.5rem;" onclick="resetForm()">Enviar outra mensagem</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="cork-divider"></div>
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">Corti<span>çeira</span></div>
+      <p>Arte e tradição em cortiça portuguesa desde 1993. Produtos únicos, sustentáveis e feitos com amor pelo artesanato do nosso país.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="#inicio">Início</a></li>
+        <li><a href="#sobre">Sobre Nós</a></li>
+        <li><a href="#catalogo">Catálogo</a></li>
+        <li><a href="#onde">Onde Estamos</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contactos</h4>
+      <ul>
+        <li><a href="#">+351 266 123 456</a></li>
+        <li><a href="#">geral@corticeira.pt</a></li>
+        <li><a href="#">Rua da Cortiça, 42</a></li>
+        <li><a href="#">7000-123 Évora</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Cortiçeira. Todos os direitos reservados.</p>
+    <div class="footer-bottom-links">
+      <a href="#">Política de Privacidade</a>
+      <a href="#">Termos de Uso</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// NAV scroll effect
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Mobile menu
+const navToggle = document.getElementById('navToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+navToggle.addEventListener('click', () => {
+  mobileMenu.classList.toggle('open');
+});
+
+function closeMobileMenu() {
+  mobileMenu.classList.remove('open');
+}
+
+// Close menu on outside click
+document.addEventListener('click', (e) => {
+  if (!navbar.contains(e.target)) {
+    mobileMenu.classList.remove('open');
+  }
+});
+
+// Scroll animations
+const fadeEls = document.querySelectorAll('.fade-in');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => {
+        entry.target.classList.add('visible');
+      }, 100);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+fadeEls.forEach(el => observer.observe(el));
+
+// Product filter
+const filterBtns = document.querySelectorAll('.filter-btn');
+const productCards = document.querySelectorAll('.product-card');
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    productCards.forEach(card => {
+      const show = filter === 'all' || card.dataset.category === filter;
+      card.style.display = show ? 'block' : 'none';
+      if (show) {
+        card.style.animation = 'fadeUp 0.4s ease forwards';
+      }
+    });
+  });
+});
+
+// Contact form
+function submitForm() {
+  const nome = document.getElementById('nome').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const assunto = document.getElementById('assunto').value;
+  const mensagem = document.getElementById('mensagem').value.trim();
+
+  if (!nome || !email || !assunto || !mensagem) {
+    alert('Por favor preencha todos os campos antes de enviar.');
+    return;
+  }
+
+  if (!email.includes('@')) {
+    alert('Por favor introduza um email válido.');
+    return;
+  }
+
+  document.getElementById('contactForm').style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+}
+
+function resetForm() {
+  document.getElementById('nome').value = '';
+  document.getElementById('email').value = '';
+  document.getElementById('assunto').value = '';
+  document.getElementById('mensagem').value = '';
+  document.getElementById('contactForm').style.display = 'block';
+  document.getElementById('formSuccess').style.display = 'none';
+}
+
+// Smooth active nav highlighting
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+  const pos = window.scrollY + 100;
+  sections.forEach(section => {
+    const top = section.offsetTop;
+    const height = section.offsetHeight;
+    const id = section.getAttribute('id');
+    const link = document.querySelector(`.nav-links a[href="#${id}"]`);
+    if (link) {
+      link.style.color = (pos >= top && pos < top + height) ? 'var(--cork-dark)' : '';
+    }
+  });
+});
+</script>
+</body>
+</html>
