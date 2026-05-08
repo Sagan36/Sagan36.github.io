@@ -15,62 +15,70 @@
 
   /* =============================================
     DARK MODE (default)
+    Coolors palette: 7C7880 / 9C9B9D / 302B46
+                      282631 / 9B9B9B / 2F213A / 613D69
   ============================================= */
   :root {
-    --color-bg:          #282631;
-    --color-surface:     #302B46;
-    --color-panel-bg:    #2F213A;
-    --color-panel-border:#613D69;
+    --color-bg:          #ffffff;       /* Darkest — main background */
+    --color-surface:     #302B46;       /* Panel surface */
+    --color-panel-bg:    #2F213A;       /* Secondary panel bg */
+    --color-panel-border:#613D69;       /* Purple accent — borders & buttons */
 
-    --color-ekans-head:  #613D69;
-    --color-ekans-body:  #4a2e52;
-    --color-ekans-eye:   #9C9B9D;
-    --color-ekans-outline:#1e1824;
+    --color-ekans-head:  #613D69;       /* Ekans signature purple from palette */
+    --color-ekans-body:  #4a2e52;       /* Slightly darker body (derived) */
+    --color-ekans-eye:   #9C9B9D;       /* Muted silver eyes */
+    --color-ekans-outline:#1e1824;      /* Very dark outline */
 
-    --color-berry:       #3B82F6;
-    --color-berry-shine: #93C5FD;
+    --color-berry:       #ef4444;       /* Red berry — kept for contrast */
+    --color-berry-shine: #fca5a5;
     --color-berry-leaf:  #22c55e;
 
-    --color-grid:        #2F213A;
-    --color-grid-border: #7C7880;
+    --color-grid:        #2F213A;       /* Subtle grid — panel bg tone */
+    --color-grid-border: #7C7880;       /* Grey-purple border */
 
-    --color-text:        #9C9B9D;
-    --color-text-dim:    #7C7880;
-    --color-gold:        #9B9B9B;
-    --color-red:         #613D69;
+    --color-text:        #9C9B9D;       /* Main text — light grey from palette */
+    --color-text-dim:    #7C7880;       /* Dimmed text — darker grey */
+    --color-gold:        #9B9B9B;       /* Score/accent — neutral silver */
+    --color-red:         #613D69;       /* Accent red replaced with palette purple */
 
     --font-pixel: 'Press Start 2P', 'Courier New', monospace;
 
-    --cell-size: 40px;
+    --cell-size: 24px;
     --grid-cols: 25;
     --grid-rows: 20;
+
+    /* Theme toggle icon */
+    --toggle-icon: '☀️';
   }
 
   /* =============================================
     LIGHT MODE
+    Warm parchment — Game Boy Color palette
   ============================================= */
   [data-theme="light"] {
-    --color-bg:          #f0ede3;
-    --color-surface:     #faf8f2;
-    --color-panel-bg:    #e8e0d0;
-    --color-panel-border:#c0392b;
+    --color-bg:          #f0ede3;       /* Warm parchment */
+    --color-surface:     #faf8f2;       /* Off-white surface */
+    --color-panel-bg:    #e8e0d0;       /* Muted panel */
+    --color-panel-border:#c0392b;       /* Pokémon red (slightly darker) */
 
-    --color-ekans-head:  #6d28d9;
+    --color-ekans-head:  #6d28d9;       /* Rich purple — stays legible on light */
     --color-ekans-body:  #5b21b6;
-    --color-ekans-eye:   #d97706;
+    --color-ekans-eye:   #d97706;       /* Amber — warm tone */
     --color-ekans-outline:#3b0764;
 
-    --color-berry:       #2563EB;
-    --color-berry-shine: #93C5FD;
+    --color-berry:       #dc2626;
+    --color-berry-shine: #fca5a5;
     --color-berry-leaf:  #16a34a;
 
-    --color-grid:        #ddd8cc;
+    --color-grid:        #ddd8cc;       /* Subtle warm grid lines */
     --color-grid-border: #bdb5a6;
 
-    --color-text:        #1c1917;
-    --color-text-dim:    #57534e;
-    --color-gold:        #b45309;
+    --color-text:        #1c1917;       /* Near-black text */
+    --color-text-dim:    #57534e;       /* Warm grey muted text */
+    --color-gold:        #b45309;       /* Darker gold — readable on light */
     --color-red:         #c0392b;
+
+    --toggle-icon: '🌙';
   }
 
   /* --- BASE LAYOUT --- */
@@ -84,14 +92,13 @@
     font-size: 10px;
     image-rendering: pixelated;
     transition: background-color 0.3s ease, color 0.3s ease;
-  }
-
-  body:not([data-theme="light"]) {
+    body:not([data-theme="light"]) {
     background-image: url('PiJwLn5.jpeg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+  }
   }
 
   /* --- SCREEN SYSTEM --- */
@@ -116,10 +123,10 @@
     background: var(--color-surface);
     border: 3px solid var(--color-panel-border);
     border-radius: 4px;
-    padding: 32px 40px;
+    padding: 48px 64px;
     text-align: center;
-    max-width: 480px;
-    width: 90%;
+    max-width: 640px;
+    width: 95%;
     box-shadow:
       0 0 0 1px var(--color-panel-bg),
       0 8px 32px rgba(0, 0, 0, 0.15),
@@ -155,6 +162,7 @@
     color: var(--color-gold);
   }
 
+  /* Show icon only on small screens to save space */
   .theme-toggle .toggle-label {
     display: inline;
   }
@@ -167,15 +175,15 @@
 
   /* --- MAIN MENU STYLES --- */
   .pokemon-logo {
-    font-size: 8px;
+    font-size: 11px;
     letter-spacing: 6px;
     color: var(--color-gold);
     margin-bottom: 4px;
   }
 
   .game-title {
-    font-size: 36px;
-    color: rgba(255, 255, 255, 0.95);
+    font-size: 48px;
+    color: rgba(255, 255, 255);
     letter-spacing: 4px;
     text-shadow:
       3px 3px 0 rgba(139, 88, 88, 0.2),
@@ -184,9 +192,7 @@
   }
 
   .game-subtitle {
-    font-size: 8px;
-    color: var(--color-text-dim);
-    letter-spacing: 3px;
+    font-size: 11px;
     margin-bottom: 24px;
   }
 
@@ -199,8 +205,18 @@
     transition: background 0.3s ease, border-color 0.3s ease;
   }
 
+  .snake-preview {
+    font-size: 20px;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+
+  .snake-preview .head { color: var(--color-ekans-head); }
+  .snake-preview .body { color: var(--color-ekans-body); }
+  .snake-preview .tail { color: var(--color-text-dim); }
+
   .dex-entry {
-    font-size: 10px;
+    font-size: 16px;
     color: var(--color-text-dim);
     line-height: 1.8;
   }
@@ -211,10 +227,8 @@
   }
 
   .difficulty-selector .label {
-    font-size: 7px;
-    color: var(--color-text-dim);
-    margin-bottom: 8px;
-    letter-spacing: 2px;
+    font-size: 10px;
+    margin-bottom: 10px;
   }
 
   .difficulty-buttons {
@@ -226,13 +240,13 @@
   .gif {
     width: 70px;
     image-rendering: pixelated;
-    margin-bottom: 5px;
-  }
+      margin-bottom: 5px;
 
+  }
   .diff-btn {
     font-family: var(--font-pixel);
-    font-size: 7px;
-    padding: 6px 12px;
+    font-size: 10px;
+    padding: 8px 16px;
     background: var(--color-bg);
     color: var(--color-text-dim);
     border: 2px solid var(--color-grid-border);
@@ -257,8 +271,8 @@
     display: block;
     width: 100%;
     font-family: var(--font-pixel);
-    font-size: 10px;
-    padding: 14px;
+    font-size: 13px;
+    padding: 16px;
     background: var(--color-panel-border);
     color: white;
     border: none;
@@ -284,8 +298,8 @@
     display: block;
     width: 100%;
     font-family: var(--font-pixel);
-    font-size: 8px;
-    padding: 10px;
+    font-size: 11px;
+    padding: 12px;
     background: transparent;
     color: var(--color-text-dim);
     border: 2px solid var(--color-grid-border);
@@ -301,10 +315,7 @@
   }
 
   .controls-hint {
-    font-size: 6px;
-    color: var(--color-text-dim);
-    margin-top: 12px;
-    line-height: 2;
+    font-size: 8px;
   }
 
   /* --- GAME SCREEN LAYOUT --- */
@@ -333,7 +344,7 @@
     gap: 4px;
   }
 
-  .hud-item.hud-right  { text-align: right; }
+  .hud-item.hud-right { text-align: right; }
   .hud-item.hud-center { text-align: center; }
 
   .hud-label {
@@ -399,6 +410,21 @@
     text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.15);
   }
 
+  .ekans-fainted {
+    background: var(--color-bg);
+    border: 2px solid var(--color-grid-border);
+    border-radius: 4px;
+    padding: 12px;
+    margin-bottom: 20px;
+    transition: background 0.3s ease;
+  }
+
+  .fainted-art {
+    font-size: 14px;
+    color: var(--color-text-dim);
+    letter-spacing: 2px;
+  }
+
   .final-stats {
     width: 100%;
     margin-bottom: 24px;
@@ -421,6 +447,11 @@
   }
 
   /* --- ANIMATIONS --- */
+  @keyframes berry-pulse {
+    0%, 100% { transform: scale(1); }
+    50%       { transform: scale(1.08); }
+  }
+
   @keyframes score-pop {
     0%   { transform: scale(1); }
     50%  { transform: scale(1.3); color: white; }
@@ -432,9 +463,9 @@
   }
 
   @keyframes flash {
-    0%   { background: rgba(59, 130, 246, 0.0); }
-    25%  { background: rgba(59, 130, 246, 0.15); }
-    100% { background: rgba(59, 130, 246, 0.0); }
+    0%   { background: rgba(139, 92, 246, 0.0); }
+    25%  { background: rgba(139, 92, 246, 0.15); }
+    100% { background: rgba(139, 92, 246, 0.0); }
   }
 
   .flash-eat {
