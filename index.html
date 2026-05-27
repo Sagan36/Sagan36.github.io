@@ -9,13 +9,19 @@
 <body>
 
   <!-- =============================================
-       THEME TOGGLE
-       Fixed button — always visible on all screens
+       THEME SELECTOR
+       Fixed control — always visible on all screens
   ============================================= -->
-  <button id="btn-theme" class="theme-toggle" aria-label="Toggle light/dark mode">
-    <span class="toggle-icon">☀️</span>
-    <span class="toggle-label"> LIGHT</span>
-  </button>
+  <label class="theme-picker" for="theme-select">
+    <span>THEME</span>
+    <select id="theme-select" aria-label="Choose color theme">
+      <option value="purple">PURPLE</option>
+      <option value="blue">BLUE</option>
+      <option value="pink">PINK</option>
+      <option value="green">GREEN</option>
+      <option value="yellow">YELLOW</option>
+    </select>
+  </label>
 
   <!-- =============================================
        MAIN MENU SCREEN
@@ -40,8 +46,39 @@
         </div>
       </div>
 
-      <button id="btn-start" class="btn-primary">▶ START GAME</button>
-      <p class="controls-hint">Arrow Keys / WASD to move &nbsp;|&nbsp; P to pause</p>
+      <button id="btn-start" class="btn-primary">▶ 1 PLAYER</button>
+      <button id="btn-multiplayer" class="btn-secondary mode-button">▶ 2 PLAYERS</button>
+      <p class="controls-hint">1P: Arrows / WASD &nbsp;|&nbsp; 2P: P1 WASD, P2 Arrows &nbsp;|&nbsp; P Pause</p>
+    </div>
+  </div>
+
+  <!-- =============================================
+       MULTIPLAYER READY SCREEN
+  ============================================= -->
+  <div id="screen-multiplayer" class="screen">
+    <div class="panel multiplayer-panel">
+      <div class="pokemon-logo">2 PLAYERS</div>
+      <h2 class="setup-title">GET READY!</h2>
+      <p class="setup-rules">3 MINUTES &nbsp;|&nbsp; EAT BERRIES &nbsp;|&nbsp; DO NOT CRASH</p>
+
+      <div class="player-guide">
+        <div class="player-card player-one">
+          <span class="snake-swatch"></span>
+          <strong>PLAYER 1</strong>
+          <span>WASD</span>
+          <small id="player-one-color">PURPLE</small>
+        </div>
+        <div class="player-card player-two">
+          <span class="snake-swatch"></span>
+          <strong>PLAYER 2</strong>
+          <span>ARROW KEYS</span>
+          <small>ORANGE</small>
+        </div>
+      </div>
+
+      <p class="setup-hint">HEAD CRASHES INTO THE OTHER SNAKE = LOSE</p>
+      <button id="btn-confirm-multiplayer" class="btn-primary">CONFIRM</button>
+      <button id="btn-cancel-multiplayer" class="btn-secondary">BACK</button>
     </div>
   </div>
 
@@ -51,19 +88,24 @@
   <div id="screen-game" class="screen">
     <div id="hud">
       <div class="hud-item">
-        <span class="hud-label">SCORE</span>
+        <span id="hud-score-label" class="hud-label">SCORE</span>
         <span id="hud-score" class="hud-value">0</span>
       </div>
       <div class="hud-item hud-center">
-        <span class="hud-label">POKEMON</span>
+        <span id="hud-center-label" class="hud-label">POKEMON</span>
+        <span id="hud-timer" class="hud-value hidden"></span>
       </div>
       <div class="hud-item hud-right">
-        <span class="hud-label">LEVEL</span>
+        <span id="hud-level-label" class="hud-label">LEVEL</span>
         <span id="hud-level" class="hud-value">1</span>
       </div>
     </div>
 
     <canvas id="game-canvas"></canvas>
+
+    <div id="overlay-countdown" class="overlay countdown-overlay hidden">
+      <span id="countdown-number">3</span>
+    </div>
 
     <div id="overlay-pause" class="overlay hidden">
       <div class="panel compact">
@@ -80,23 +122,23 @@
   ============================================= -->
   <div id="screen-gameover" class="screen">
     <div class="panel">
-      <div class="fainted-text">YOUR POKEMON<br/>FAINTED!</div>
+      <div id="result-title" class="fainted-text">YOUR POKEMON<br/>FAINTED!</div>
 
       <div class="final-stats">
         <div class="stat-row">
-          <span>SCORE</span>
+          <span id="final-score-label">SCORE</span>
           <span id="final-score">0</span>
         </div>
         <div class="stat-row">
-          <span>HIGH SCORE</span>
+          <span id="final-highscore-label">HIGH SCORE</span>
           <span id="final-highscore">0</span>
         </div>
         <div class="stat-row">
-          <span>LEVEL REACHED</span>
+          <span id="final-level-label">LEVEL REACHED</span>
           <span id="final-level">1</span>
         </div>
         <div class="stat-row">
-          <span>BERRIES ATE</span>
+          <span id="final-berries-label">BERRIES ATE</span>
           <span id="final-berries">0</span>
         </div>
       </div>

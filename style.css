@@ -14,12 +14,12 @@
   }
 
   /* =============================================
-    DARK MODE (default)
+    PURPLE THEME (default; previously dark mode)
     Coolors palette: 7C7880 / 9C9B9D / 302B46
                       282631 / 9B9B9B / 2F213A / 613D69
   ============================================= */
   :root {
-    --color-bg:          #ffffff;       /* Darkest — main background */
+    --color-bg:          #282631;       /* Darkest — main background */
     --color-surface:     #302B46;       /* Panel surface */
     --color-panel-bg:    #2F213A;       /* Secondary panel bg */
     --color-panel-border:#613D69;       /* Purple accent — borders & buttons */
@@ -40,6 +40,8 @@
     --color-text-dim:    #7C7880;       /* Dimmed text — darker grey */
     --color-gold:        #9B9B9B;       /* Score/accent — neutral silver */
     --color-red:         #613D69;       /* Accent red replaced with palette purple */
+    --color-accent-soft: rgba(97, 61, 105, 0.22);
+    --color-accent-glow: rgba(97, 61, 105, 0.4);
 
     --font-pixel: 'Press Start 2P', 'Courier New', monospace;
 
@@ -47,38 +49,82 @@
     --grid-cols: 25;
     --grid-rows: 20;
 
-    /* Theme toggle icon */
-    --toggle-icon: '☀️';
   }
 
-  /* =============================================
-    LIGHT MODE
-    Warm parchment — Game Boy Color palette
-  ============================================= */
-  [data-theme="light"] {
-    --color-bg:          #f0ede3;       /* Warm parchment */
-    --color-surface:     #faf8f2;       /* Off-white surface */
-    --color-panel-bg:    #e8e0d0;       /* Muted panel */
-    --color-panel-border:#c0392b;       /* Pokémon red (slightly darker) */
+  [data-theme="blue"] {
+    --color-bg:          #09192d;
+    --color-surface:     #102d4e;
+    --color-panel-bg:    #0b213a;
+    --color-panel-border:#3988c9;
+    --color-ekans-head:  #5aa9ea;
+    --color-ekans-body:  #2875b4;
+    --color-ekans-eye:   #d9f2ff;
+    --color-ekans-outline:#071524;
+    --color-grid:        #183e61;
+    --color-grid-border: #3b78a8;
+    --color-text:        #e2f2ff;
+    --color-text-dim:    #9dc7e6;
+    --color-gold:        #74d5ff;
+    --color-red:         #3988c9;
+    --color-accent-soft: rgba(57, 136, 201, 0.2);
+    --color-accent-glow: rgba(90, 169, 234, 0.38);
+  }
 
-    --color-ekans-head:  #6d28d9;       /* Rich purple — stays legible on light */
-    --color-ekans-body:  #5b21b6;
-    --color-ekans-eye:   #d97706;       /* Amber — warm tone */
-    --color-ekans-outline:#3b0764;
+  [data-theme="pink"] {
+    --color-bg:          #331624;
+    --color-surface:     #57243b;
+    --color-panel-bg:    #401b2c;
+    --color-panel-border:#d75a91;
+    --color-ekans-head:  #ed79ac;
+    --color-ekans-body:  #c04479;
+    --color-ekans-eye:   #ffe8f2;
+    --color-ekans-outline:#28101c;
+    --color-grid:        #653049;
+    --color-grid-border: #b55580;
+    --color-text:        #ffe5ef;
+    --color-text-dim:    #e8a8c3;
+    --color-gold:        #ff9fc7;
+    --color-red:         #d75a91;
+    --color-accent-soft: rgba(215, 90, 145, 0.2);
+    --color-accent-glow: rgba(237, 121, 172, 0.4);
+  }
 
-    --color-berry:       #dc2626;
-    --color-berry-shine: #fca5a5;
-    --color-berry-leaf:  #16a34a;
+  [data-theme="green"] {
+    --color-bg:          #10271d;
+    --color-surface:     #173d2d;
+    --color-panel-bg:    #102f23;
+    --color-panel-border:#38a867;
+    --color-ekans-head:  #54c986;
+    --color-ekans-body:  #278651;
+    --color-ekans-eye:   #e3ffe9;
+    --color-ekans-outline:#091c12;
+    --color-grid:        #205239;
+    --color-grid-border: #438c65;
+    --color-text:        #ddf8e6;
+    --color-text-dim:    #9acdac;
+    --color-gold:        #75df9a;
+    --color-red:         #38a867;
+    --color-accent-soft: rgba(56, 168, 103, 0.2);
+    --color-accent-glow: rgba(84, 201, 134, 0.38);
+  }
 
-    --color-grid:        #ddd8cc;       /* Subtle warm grid lines */
-    --color-grid-border: #bdb5a6;
-
-    --color-text:        #1c1917;       /* Near-black text */
-    --color-text-dim:    #57534e;       /* Warm grey muted text */
-    --color-gold:        #b45309;       /* Darker gold — readable on light */
-    --color-red:         #c0392b;
-
-    --toggle-icon: '🌙';
+  [data-theme="yellow"] {
+    --color-bg:          #322508;
+    --color-surface:     #514015;
+    --color-panel-bg:    #40310d;
+    --color-panel-border:#d3a52c;
+    --color-ekans-head:  #f1c84d;
+    --color-ekans-body:  #c08c20;
+    --color-ekans-eye:   #fff6ce;
+    --color-ekans-outline:#251904;
+    --color-grid:        #66501b;
+    --color-grid-border: #b79539;
+    --color-text:        #fff2c3;
+    --color-text-dim:    #ddc274;
+    --color-gold:        #ffd65a;
+    --color-red:         #d3a52c;
+    --color-accent-soft: rgba(211, 165, 44, 0.2);
+    --color-accent-glow: rgba(241, 200, 77, 0.38);
   }
 
   /* --- BASE LAYOUT --- */
@@ -92,13 +138,33 @@
     font-size: 10px;
     image-rendering: pixelated;
     transition: background-color 0.3s ease, color 0.3s ease;
-    body:not([data-theme="light"]) {
+  }
+
+  body[data-theme="purple"] {
     background-image: url('PiJwLn5.jpeg');
+  }
+
+  body[data-theme="blue"] {
+    background-image: url('azul.jpg');
+  }
+
+  body[data-theme="pink"] {
+    background-image: url('rosa.jpg');
+  }
+
+  body[data-theme="green"] {
+    background-image: url('green.jpg');
+  }
+
+  body[data-theme="yellow"] {
+    background-image: url('amarelo.jpg');
+  }
+
+  body[data-theme] {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-  }
   }
 
   /* --- SCREEN SYSTEM --- */
@@ -139,8 +205,8 @@
     max-width: 320px;
   }
 
-  /* --- THEME TOGGLE BUTTON --- */
-  .theme-toggle {
+  /* --- THEME PICKER --- */
+  .theme-picker {
     position: fixed;
     top: 12px;
     right: 12px;
@@ -152,23 +218,32 @@
     font-family: var(--font-pixel);
     font-size: 8px;
     color: var(--color-text-dim);
-    cursor: pointer;
     transition: all 0.15s;
     letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
-  .theme-toggle:hover {
+  .theme-picker:hover,
+  .theme-picker:focus-within {
     border-color: var(--color-gold);
     color: var(--color-gold);
   }
 
-  /* Show icon only on small screens to save space */
-  .theme-toggle .toggle-label {
-    display: inline;
+  .theme-picker select {
+    appearance: none;
+    background: var(--color-panel-bg);
+    border: 1px solid var(--color-grid-border);
+    color: var(--color-text);
+    cursor: pointer;
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    padding: 5px 8px;
   }
 
   @media (max-width: 500px) {
-    .theme-toggle .toggle-label {
+    .theme-picker > span {
       display: none;
     }
   }
@@ -183,11 +258,11 @@
 
   .game-title {
     font-size: 48px;
-    color: rgba(255, 255, 255);
+    color: var(--color-text);
     letter-spacing: 4px;
     text-shadow:
-      3px 3px 0 rgba(139, 88, 88, 0.2),
-      0 0 20px rgba(233, 69, 96, 0.3);
+      3px 3px 0 var(--color-accent-soft),
+      0 0 20px var(--color-accent-glow);
     margin-bottom: 4px;
   }
 
@@ -197,7 +272,7 @@
   }
 
   .ekans-art {
-    background:  rgba(212, 168, 168, 0.2);
+    background: var(--color-accent-soft);
     border: 2px solid var(--color-grid-border);
     border-radius: 4px;
     padding: 16px;
@@ -314,8 +389,88 @@
     color: var(--color-text);
   }
 
+  .mode-button {
+    margin-bottom: 18px;
+  }
+
   .controls-hint {
     font-size: 8px;
+    line-height: 1.8;
+  }
+
+  /* --- MULTIPLAYER SETUP --- */
+  .multiplayer-panel {
+    max-width: 540px;
+  }
+
+  .setup-title {
+    color: var(--color-text);
+    font-size: 26px;
+    margin: 12px 0;
+  }
+
+  .setup-rules,
+  .setup-hint {
+    color: var(--color-text-dim);
+    font-size: 7px;
+    line-height: 1.9;
+  }
+
+  .player-guide {
+    display: flex;
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  .player-card {
+    background: var(--color-panel-bg);
+    border: 2px solid var(--color-grid-border);
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 12px;
+    padding: 18px 10px;
+  }
+
+  .player-card strong {
+    color: var(--color-text);
+    font-size: 10px;
+  }
+
+  .player-card span:not(.snake-swatch) {
+    color: var(--color-text-dim);
+    font-size: 8px;
+  }
+
+  .player-card small {
+    font-size: 7px;
+  }
+
+  .player-one small {
+    color: var(--color-ekans-head);
+  }
+
+  .player-two small {
+    color: #f97316;
+  }
+
+  .snake-swatch {
+    border-radius: 4px;
+    height: 18px;
+    margin: 0 auto;
+    width: 52px;
+  }
+
+  .player-one .snake-swatch {
+    background: var(--color-ekans-head);
+  }
+
+  .player-two .snake-swatch {
+    background: #f97316;
+  }
+
+  .setup-hint {
+    margin-bottom: 22px;
   }
 
   /* --- GAME SCREEN LAYOUT --- */
@@ -358,6 +513,22 @@
     color: var(--color-gold);
   }
 
+  #hud-timer {
+    color: var(--color-text);
+  }
+
+  #hud-timer.hidden {
+    display: none;
+  }
+
+  .multiplayer #hud-score {
+    color: var(--color-ekans-head);
+  }
+
+  .multiplayer #hud-level {
+    color: #f97316;
+  }
+
   /* Canvas */
   #game-canvas {
     display: block;
@@ -379,13 +550,19 @@
     transition: opacity 0.2s;
   }
 
-  [data-theme="light"] .overlay {
-    background: rgba(240, 237, 227, 0.75);
-  }
-
   .overlay.hidden {
     opacity: 0;
     pointer-events: none;
+  }
+
+  .countdown-overlay {
+    background: rgba(0, 0, 0, 0.42);
+  }
+
+  #countdown-number {
+    color: var(--color-gold);
+    font-size: 72px;
+    text-shadow: 4px 4px 0 var(--color-panel-border);
   }
 
   .overlay .panel h2 {
@@ -463,9 +640,9 @@
   }
 
   @keyframes flash {
-    0%   { background: rgba(139, 92, 246, 0.0); }
-    25%  { background: rgba(139, 92, 246, 0.15); }
-    100% { background: rgba(139, 92, 246, 0.0); }
+    0%   { background: transparent; }
+    25%  { background: var(--color-accent-soft); }
+    100% { background: transparent; }
   }
 
   .flash-eat {
@@ -486,5 +663,9 @@
 
     .game-title {
       font-size: 24px;
+    }
+
+    .player-guide {
+      flex-direction: column;
     }
   }
