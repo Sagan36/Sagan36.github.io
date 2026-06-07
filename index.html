@@ -25,7 +25,7 @@
 
   <label class="volume-control" for="volume-slider">
     <span>VOLUME</span>
-    <input id="volume-slider" type="range" min="0" max="100" value="65" aria-label="Volume" />
+    <input id="volume-slider" type="range" min="0" max="100" value="45" aria-label="Volume" />
   </label>
 
   <!-- =============================================
@@ -45,14 +45,27 @@
       <div class="difficulty-selector">
         <p class="label">SELECT DIFFICULTY</p>
         <div class="difficulty-buttons">
-          <button class="diff-btn active" data-speed="120" id="diff-easy">EASY</button>
-          <button class="diff-btn" data-speed="80" id="diff-normal">NORMAL</button>
-          <button class="diff-btn" data-speed="50" id="diff-hard">HARD</button>
+          <button class="diff-btn active" data-speed="210" id="diff-easy">EASY</button>
+          <button class="diff-btn" data-speed="165" id="diff-normal">NORMAL</button>
+          <button class="diff-btn" data-speed="130" id="diff-hard">HARD</button>
         </div>
+      </div>
+
+      <div class="menu-options">
+        <label class="select-row" for="pokemon-select">
+          <span>POKEMON</span>
+          <select id="pokemon-select" aria-label="Choose Pokemon">
+            <option value="ekans">EKANS</option>
+            <option value="seviper">SEVIPER</option>
+            <option value="serperior">SERPERIOR</option>
+            <option value="dragonair">DRAGONAIR</option>
+          </select>
+        </label>
       </div>
 
       <button id="btn-start" class="btn-primary">▶ 1 PLAYER</button>
       <button id="btn-multiplayer" class="btn-secondary mode-button">▶ 2 PLAYERS</button>
+      <button id="btn-achievements" class="btn-secondary mode-button">ACHIEVEMENTS</button>
       <p class="controls-hint">1P: Arrows / WASD &nbsp;|&nbsp; 2P: P1 WASD, P2 Arrows &nbsp;|&nbsp; P Pause</p>
     </div>
   </div>
@@ -70,12 +83,14 @@
         <div class="player-card player-one">
           <span class="snake-swatch"></span>
           <strong>PLAYER 1</strong>
+          <input id="player-one-name" class="player-name-input" maxlength="10" value="PLAYER 1" aria-label="Player 1 name" />
           <span>WASD</span>
           <small id="player-one-color">PURPLE</small>
         </div>
         <div class="player-card player-two">
           <span class="snake-swatch"></span>
           <strong>PLAYER 2</strong>
+          <input id="player-two-name" class="player-name-input" maxlength="10" value="PLAYER 2" aria-label="Player 2 name" />
           <span>ARROW KEYS</span>
           <small>ORANGE</small>
         </div>
@@ -99,6 +114,7 @@
       <div class="hud-item hud-center">
         <span id="hud-center-label" class="hud-label">POKEMON</span>
         <span id="hud-timer" class="hud-value hidden"></span>
+        <span id="hud-combo" class="hud-badge hidden">COMBO x1</span>
       </div>
       <div class="hud-item hud-right">
         <span id="hud-level-label" class="hud-label">LEVEL</span>
@@ -112,13 +128,39 @@
       <span id="countdown-number">3</span>
     </div>
 
+    <div id="overlay-battle" class="overlay battle-transition hidden">
+      <span>BATTLE START!</span>
+    </div>
+
     <div id="overlay-pause" class="overlay hidden">
       <div class="panel compact">
         <h2>⏸ PAUSED</h2>
         <p>Press <strong>P</strong> to resume</p>
+        <label class="pause-control" for="pause-volume-slider">
+          <span>VOLUME</span>
+          <input id="pause-volume-slider" type="range" min="0" max="100" value="45" aria-label="Pause volume" />
+        </label>
+        <label class="pause-control" for="pause-theme-select">
+          <span>THEME</span>
+          <select id="pause-theme-select" aria-label="Pause theme">
+            <option value="purple">PURPLE</option>
+            <option value="blue">BLUE</option>
+            <option value="pink">PINK</option>
+            <option value="green">GREEN</option>
+            <option value="yellow">YELLOW</option>
+          </select>
+        </label>
         <button id="btn-resume" class="btn-primary">RESUME</button>
+        <button id="btn-restart-pause" class="btn-secondary">RESTART</button>
         <button id="btn-quit-pause" class="btn-secondary">QUIT TO MENU</button>
       </div>
+    </div>
+
+    <div id="mobile-controls" class="mobile-controls" aria-label="Mobile controls">
+      <button data-dir="up" aria-label="Up">▲</button>
+      <button data-dir="left" aria-label="Left">◀</button>
+      <button data-dir="down" aria-label="Down">▼</button>
+      <button data-dir="right" aria-label="Right">▶</button>
     </div>
   </div>
 
@@ -147,8 +189,26 @@
           <span id="final-berries">0</span>
         </div>
       </div>
+      <div id="rank-badge" class="rank-badge">RANK C</div>
       <button id="btn-retry" class="btn-primary">▶ TRY AGAIN</button>
       <button id="btn-menu" class="btn-secondary">MAIN MENU</button>
+    </div>
+  </div>
+
+  <div id="screen-achievements" class="screen">
+    <div class="panel achievements-panel">
+      <div class="pokemon-logo">ACHIEVEMENTS</div>
+      <h2 class="setup-title">TRAINER CARD</h2>
+      <div id="achievements-list" class="achievements-list"></div>
+      <button id="btn-achievements-back" class="btn-secondary">BACK</button>
+    </div>
+  </div>
+
+  <div id="tutorial-overlay" class="tutorial-overlay hidden">
+    <div class="panel compact">
+      <h2>HOW TO PLAY</h2>
+      <p>Eat berries, build combos, avoid walls, rocks and yourself. Special berries change the match for a few seconds.</p>
+      <button id="btn-tutorial-ok" class="btn-primary">START</button>
     </div>
   </div>
 
