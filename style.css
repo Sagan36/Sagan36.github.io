@@ -48,6 +48,7 @@
     --cell-size: 24px;
     --grid-cols: 25;
     --grid-rows: 20;
+    --theme-bg-image: url('./PiJwLn5.jpeg');
 
   }
 
@@ -68,6 +69,7 @@
     --color-red:         #3988c9;
     --color-accent-soft: rgba(57, 136, 201, 0.2);
     --color-accent-glow: rgba(90, 169, 234, 0.38);
+    --theme-bg-image: url('./azul.jpg');
   }
 
   [data-theme="pink"] {
@@ -87,6 +89,7 @@
     --color-red:         #d75a91;
     --color-accent-soft: rgba(215, 90, 145, 0.2);
     --color-accent-glow: rgba(237, 121, 172, 0.4);
+    --theme-bg-image: url('./rosa.jpg');
   }
 
   [data-theme="green"] {
@@ -106,6 +109,7 @@
     --color-red:         #38a867;
     --color-accent-soft: rgba(56, 168, 103, 0.2);
     --color-accent-glow: rgba(84, 201, 134, 0.38);
+    --theme-bg-image: url('./green.jpg');
   }
 
   [data-theme="yellow"] {
@@ -125,6 +129,7 @@
     --color-red:         #d3a52c;
     --color-accent-soft: rgba(211, 165, 44, 0.2);
     --color-accent-glow: rgba(241, 200, 77, 0.38);
+    --theme-bg-image: url('./amarelo.jpg');
   }
 
   /* --- BASE LAYOUT --- */
@@ -140,31 +145,21 @@
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  body[data-theme="purple"] {
-    background-image: url('PiJwLn5.jpeg');
-  }
-
-  body[data-theme="blue"] {
-    background-image: url('azul.jpg');
-  }
-
-  body[data-theme="pink"] {
-    background-image: url('rosa.jpg');
-  }
-
-  body[data-theme="green"] {
-    background-image: url('green.jpg');
-  }
-
-  body[data-theme="yellow"] {
-    background-image: url('amarelo.jpg');
-  }
-
-  body[data-theme] {
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-image: var(--theme-bg-image);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
+    transition: background-image 0.3s ease;
+  }
+
+  body > * {
+    position: relative;
+    z-index: 1;
   }
 
   /* --- SCREEN SYSTEM --- */
@@ -242,9 +237,44 @@
     padding: 5px 8px;
   }
 
+  .volume-control {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 1000;
+    background: var(--color-surface);
+    border: 2px solid var(--color-grid-border);
+    border-radius: 2px;
+    padding: 6px 10px;
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    color: var(--color-text-dim);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.15s;
+  }
+
+  .volume-control:hover,
+  .volume-control:focus-within {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+  }
+
+  .volume-control input {
+    accent-color: var(--color-panel-border);
+    cursor: pointer;
+    width: 120px;
+  }
+
   @media (max-width: 500px) {
-    .theme-picker > span {
+    .theme-picker > span,
+    .volume-control > span {
       display: none;
+    }
+
+    .volume-control input {
+      width: 84px;
     }
   }
 

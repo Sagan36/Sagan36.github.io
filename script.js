@@ -222,6 +222,7 @@ const GameState = {
 ============================================== */
 const ScreenManager = {
   screens: {},
+  current: null,
 
   init() {
     this.screens.menu     = document.getElementById('screen-menu');
@@ -231,9 +232,14 @@ const ScreenManager = {
   },
 
   show(name) {
+    const previous = this.current;
     Object.values(this.screens).forEach(s => s.classList.remove('active'));
     if (this.screens[name]) {
       this.screens[name].classList.add('active');
+      this.current = name;
+      if (typeof SoundManager !== 'undefined') {
+        SoundManager.onScreenChange(name, previous);
+      }
     }
   }
 };
@@ -972,6 +978,7 @@ const UIManager = {
     GameLoop.lastTickTime = timestamp;
     number.textContent = 'GO!';
     UIManager.updateHUD();
+    SoundManager.playMusic('battle');
 
     GameLoop.countdownHideTimer = setTimeout(() => {
       document.getElementById('overlay-countdown').classList.add('hidden');
@@ -993,8 +1000,126 @@ const UIManager = {
 const SoundManager = {
   ctx:     null,
   enabled: true,
+  volume: 0.65,
+  currentMusic: null,
+  music: {},
+  effects: {},
 
-  init() {},
+  init() {
+    const savedVolume = Number(localStorage.getItem('ekans-volume'));
+    this.volume = Number.isFinite(savedVolume) ? savedVolume : this.volume;
+
+    this.music = {
+      menu: this.createAudio('sons/1-04. Aspertia City.mp3', true),
+      battle: this.createAudio('sons/2-04. Battle! (Gym Leader—Kanto Version).mp3', true),
+      award: this.createAudio('sons/1-65. Award Ceremony - Last_.mp3', false),
+    };
+
+    this.effects = {
+      transition: this.createAudio('sons/Turn Off.mp3', false),
+    };
+
+    const slider = document.getElementById('volume-slider');
+    if (slider) {
+      slider.value = Math.round(this.volume * 100);
+      slider.addEventListener('input', event => {
+        this.setVolume(Number(event.target.value) / 100);
+      });
+    }
+
+    document.addEventListener('pointerdown', () => this.unlock(), { once: true });
+    document.addEventListener('keydown', () => this.unlock(), { once: true });
+    this.applyVolume();
+  },
+
+  createAudio(src, loop) {
+    const audio = new Audio(src);
+    audio.loop = loop;
+    audio.preload = 'auto';
+    return audio;
+  },
+
+  setVolume(value) {
+    this.volume = Math.max(0, Math.min(1, value));
+    localStorage.setItem('ekans-volume', String(this.volume));
+    this.applyVolume();
+  },
+
+  applyVolume() {
+    Object.values(this.music).forEach(audio => {
+      audio.volume = this.volume;
+    });
+    Object.values(this.effects).forEach(audio => {
+      audio.volume = this.volume;
+    });
+  },
+
+  unlock() {
+    this.getCtx();
+    if (ScreenManager.current === 'menu' || ScreenManager.current === 'multiplayer') {
+      this.playMusic('menu');
+    } else if (ScreenManager.current === 'game' && GameState.isRunning) {
+      this.playMusic('battle');
+    }
+  },
+
+  onScreenChange(name, previous) {
+    const changedScreen = previous && previous !== name;
+    if (changedScreen) {
+      this.playEffect('transition');
+    }
+
+    if (name === 'menu' || name === 'multiplayer') {
+      this.playMusic('menu');
+      return;
+    }
+
+    if (name === 'gameover') {
+      setTimeout(() => {
+        if (ScreenManager.current === 'gameover') {
+          this.playMusic('award');
+        }
+      }, changedScreen ? 450 : 0);
+      return;
+    }
+
+    if (name === 'game') {
+      this.stopMusic();
+    }
+  },
+
+  playMusic(name) {
+    const track = this.music[name];
+    if (!track || this.currentMusic === track) {
+      return;
+    }
+
+    this.stopMusic();
+    this.currentMusic = track;
+    track.currentTime = 0;
+    track.volume = this.volume;
+    track.play().catch(() => {});
+  },
+
+  stopMusic() {
+    if (!this.currentMusic) {
+      return;
+    }
+    this.currentMusic.pause();
+    this.currentMusic.currentTime = 0;
+    this.currentMusic = null;
+  },
+
+  playEffect(name) {
+    const effect = this.effects[name];
+    if (!effect) {
+      return;
+    }
+    effect.pause();
+    effect.currentTime = 0;
+    effect.volume = this.volume;
+    effect.play().catch(() => {});
+  },
 
   getCtx() {
     if (!this.ctx) {
@@ -1028,7 +1153,7 @@ const SoundManager = {
 
     oscillator.type = type;
     oscillator.frequency.setValueAtTime(frequency, ctx.currentTime);
-    gainNode.gain.setValueAtTime(volume, ctx.currentTime);
+    gainNode.gain.setValueAtTime(volume * this.volume, ctx.currentTime);
     gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
 
     oscillator.start(ctx.currentTime);
@@ -1078,6 +1203,7 @@ const DifficultySelector = {
         buttons.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         this.selectedSpeed = parseInt(btn.dataset.speed, 10);
+        SoundManager.playEffect('transition');
       });
     });
   },
@@ -1160,6 +1286,12 @@ function startGame(mode = 'single') {
     GameState.countdownEndsAt = performance.now() + 3000;
     document.getElementById('countdown-number').textContent = '3';
     document.getElementById('overlay-countdown').classList.remove('hidden');
+  } else {
+    setTimeout(() => {
+      if (ScreenManager.current === 'game' && GameState.isRunning) {
+        SoundManager.playMusic('battle');
+      }
+    }, 450);
   }
 
   UIManager.updateHUD();
@@ -1190,17 +1322,14 @@ function init() {
   PokedexManager.init();   // ← fetch random Pokémon on every load
 
   document.getElementById('btn-start').addEventListener('click', () => {
-    SoundManager.play('eat');
     startGame('single');
   });
 
   document.getElementById('btn-multiplayer').addEventListener('click', () => {
-    SoundManager.play('eat');
     showMultiplayerSetup();
   });
 
   document.getElementById('btn-confirm-multiplayer').addEventListener('click', () => {
-    SoundManager.play('eat');
     startGame('multiplayer');
   });
 
